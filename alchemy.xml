@@ -1,0 +1,34 @@
+<root>
+	<Core
+		jobqueueBatchDataHeapSize = "256"
+		archiveNumWorkItems = "2"
+	/>
+	<Anim
+		enableInNodeActorUpdate = "true"
+	/>
+	<Gfx
+		softwareBlending = "false"
+		dynamicVertexBufferSize = "2500000"
+		shaderCacheSize = "384"
+		presentationInterval = "1"
+	/>
+	<Sg
+		useSharedBlendMatrices = "true"
+		traversalBlockSize = "4096"
+		traversalBlockCount = "1024"
+		dynamicBoneBlendMatricesBufferSize = "150000"
+	/>
+	<Tfb
+		startLevel = "Title"
+		rendererName = "renderer"
+		bedrockEnvironment = "live"
+		bedrockAppVersion = "andc-2418727"
+		contentDeploymentActive = "true"
+		contentManifestUserResourceUrl = "http://trapteam-tablet.activision.com/Tablet2014/andc/userResources-2418727.json"
+		minFreeSpaceGame = "1500000000"
+		minFreeSpaceGameFull = "4500000000"
+		debug = "false"
+	/>
+	<Audio
+	/>
+</root>
