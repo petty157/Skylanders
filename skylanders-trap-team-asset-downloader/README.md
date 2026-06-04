@@ -1,8 +1,8 @@
-# Skylanders Trap Team — Server Files Downloader
+# Skylanders Trap Team — Android Language Files Downloader
 
-Downloads official **Skylanders Trap Team** tablet content from Activision’s legacy CDN for the **Android** build. The script reads the content deployment manifest, filters assets by language, and saves them to a folder you choose.
+Downloads **Skylanders Trap Team** Android tablet assets from Activision’s legacy CDN manifest, with filters tuned for **language packs** and **English base content** (not a full blind manifest dump).
 
-> **Android only.** This manifest and URL path target the `andb` (Android) tablet deployment, not iOS.
+> **Android only.** Uses the `andb` tablet deployment manifest, not iOS.
 
 ## Credits
 
@@ -15,65 +15,54 @@ Downloads official **Skylanders Trap Team** tablet content from Activision’s l
 - [`requests`](https://pypi.org/project/requests/)
 
 ```bash
-pip install requests
+pip install -r requirements.txt
 ```
 
 ## Usage
 
 1. Open a terminal in this folder.
-2. Run the script:
+2. Run:
 
    ```bash
    python downloadfiles.py
    ```
 
-3. Enter a **valid existing directory** where files should be saved (e.g. `C:\TrapTeam\assets\`).
-4. Pick a **language** from the numbered list (1–12).
-5. Wait while files download. Existing files in the target folder are **skipped**.
+3. Enter an **existing** folder path where files should be saved.
+4. Choose a language (1–12).
+5. Wait for downloads. Files already on disk are skipped (English shows progress against the expected total).
 
-The script prints colored status lines: begin, progress %, downloaded, or skipped.
+## Language filtering
 
-## Supported languages
+| # | Language | What gets downloaded |
+|---|----------|----------------------|
+| 1 | **English** | Filenames containing `level` or `character` (~526 assets). Shows a running **downloaded/total** counter for English. |
+| 2–12 | **Other languages** | Filename contains the language tag (`dutch`, `french`, etc.) and does **not** contain `english`. |
 
-| # | Language   | Manifest filter |
-|---|------------|-----------------|
-| 1 | English    | (default / all matching entries) |
-| 2 | Dutch      | `dutch` |
-| 3 | Finnish    | `finnish` |
-| 4 | French     | `french` |
-| 5 | German     | `german` |
-| 6 | Hispanic   | `hispanic` |
-| 7 | Italian    | `italian` |
-| 8 | Norwegian  | `norwegian` |
-| 9 | Portuguese | `portuguese` |
-| 10 | Spanish   | `spanish` |
-| 11 | Swedish   | `swedish` |
-| 12 | Danish    | `danish` |
-
-Non-English packs are filtered by a language tag in each asset filename on the CDN.
+This avoids pulling unrelated manifest entries for English and avoids mixing English-tagged files into other language packs.
 
 ## How it works
 
-1. Fetches Activision’s **ContentDeploymentManifest** for Trap Team tablet Android builds.
-2. Parses manifest lines that contain `http://trapteam-tablet.activision.com/`.
-3. For each asset URL, derives the on-disk filename (hash suffix included).
-4. Downloads missing files with streaming and a simple progress percentage.
+1. Fetches the **ContentDeploymentManifest** from `trapteam-tablet.activision.com`.
+2. Keeps only manifest lines with asset URLs on that host.
+3. Applies the language rules above.
+4. Streams each missing file to disk with a progress percentage.
 
-Manifest source (example):
+Manifest URL:
 
 `http://trapteam-tablet.activision.com/Tablet2014/andb/ContentDeploymentManifest.xml.D4C088857665CFB8E70CD26EFAC483D7`
 
 ## Notes
 
-- **Resume-friendly:** re-running the script skips files already present in your folder.
-- **Network:** requires access to `trapteam-tablet.activision.com`. If Activision has shut down or changed these endpoints, downloads may fail.
-- **Legal:** assets are Activision’s property. Use only for preservation, modding, or research you are allowed to perform; this repo does not grant any license to the game files.
+- **Resume-friendly:** existing files are skipped; re-run to fill gaps.
+- **CDN:** needs `trapteam-tablet.activision.com` to be reachable; endpoints may be offline over time.
+- **Legal:** game assets belong to Activision. Use only for allowed preservation, modding, or research.
 
 ## Project layout
 
 ```
 .
-├── downloadfiles.py   # Interactive downloader
+├── downloadfiles.py
+├── requirements.txt
 └── README.md
 ```
 
